@@ -38,10 +38,10 @@ mkdir build
 mkdir release
 pushd build
 
-# download kmod
-echo "= downloading kmod v${xz_version}"
+# download xz
 git clone https://git.tukaani.org/xz.git
 xz_version="$(cd xz && git describe --long --tags|sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g')"
+echo "= downloading xz v${xz_version}"
 mv xz "xz-$xz_version"
 
 if [ "$platform" == "Linux" ]
@@ -75,7 +75,7 @@ if [ "$platform" == "Linux" ]
         echo "= (This is mainly due to non-static libc availability.)"
 fi
 
-echo "= building kmod"
+echo "= building xz"
 pushd xz-${xz_version}
 CFLAGS="$CFLAGS -g -O2 -Os -ffunction-sections -fdata-sections" ./autogen.sh
 ./configure CC="$CC" CFLAGS="$CFLAGS -g -O2 -Os -ffunction-sections -fdata-sections" LDFLAGS="$LDFLAGS -Wl,--gc-sections"
@@ -87,7 +87,7 @@ popd # build
 
 shopt -s extglob
 
-echo "= extracting kmod binary"
+echo "= extracting xz binary"
 mv "build/xz-${xz_version}/install/usr/local/bin/"* release 2>/dev/null
 
 echo "= striptease"
