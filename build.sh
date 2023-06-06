@@ -14,7 +14,7 @@ if [ -x "$(which apt 2>/dev/null)" ]
     then
         apt update && apt install -y \
             build-essential clang pkg-config git autoconf libtool \
-            gettext autopoint po4a upx
+            gettext autopoint po4a upx doxygen
 fi
 
 [ "$musl_version" == "latest" ] && \
@@ -91,9 +91,9 @@ echo "= extracting xz binary"
 mv "build/xz-${xz_version}/install/usr/local/bin/"* release 2>/dev/null
 
 echo "= striptease"
-for file in release/*
+for file in lzmadec lzmainfo xz xzdec
   do
-      strip -s -R .comment -R .gnu.version --strip-unneeded "$file" 2>/dev/null
+      strip -s -R .comment -R .gnu.version --strip-unneeded "release/$file" 2>/dev/null
 done
 
 if [[ "$WITH_UPX" == 1 && -x "$(which upx 2>/dev/null)" ]]
